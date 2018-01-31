@@ -1630,9 +1630,9 @@ class GlusterFsDriverTestCase(test.TestCase):
 
             mock_get_active_image_from_info.assert_called_once_with(volume)
             mock_local_volume_dir.assert_called_once_with(volume)
-            mock_qemu_img_info.assert_called_once_with(volume_path)
+            mock_qemu_img_info.assert_called_once_with(volume_path, run_as_root=True)
             mock_upload_volume.assert_called_once_with(
-                mock.ANY, mock.ANY, mock.ANY, upload_path)
+                mock.ANY, mock.ANY, mock.ANY, upload_path, run_as_root=True)
             self.assertEqual(1, mock_create_temporary_file.call_count)
 
     def test_copy_volume_to_image_qcow2_image(self):
@@ -1675,11 +1675,11 @@ class GlusterFsDriverTestCase(test.TestCase):
 
             mock_get_active_image_from_info.assert_called_once_with(volume)
             mock_local_volume_dir.assert_called_with(volume)
-            mock_qemu_img_info.assert_called_once_with(volume_path)
+            mock_qemu_img_info.assert_called_once_with(volume_path, run_as_root=True)
             mock_convert_image.assert_called_once_with(
-                volume_path, upload_path, 'raw')
+                volume_path, upload_path, 'raw', run_as_root=True)
             mock_upload_volume.assert_called_once_with(
-                mock.ANY, mock.ANY, mock.ANY, upload_path)
+                mock.ANY, mock.ANY, mock.ANY, upload_path, run_as_root=True)
             self.assertEqual(1, mock_create_temporary_file.call_count)
 
     def test_copy_volume_to_image_snapshot_exists(self):
@@ -1724,11 +1724,11 @@ class GlusterFsDriverTestCase(test.TestCase):
 
             mock_get_active_image_from_info.assert_called_once_with(volume)
             mock_local_volume_dir.assert_called_with(volume)
-            mock_qemu_img_info.assert_called_once_with(volume_path)
+            mock_qemu_img_info.assert_called_once_with(volume_path, run_as_root=True)
             mock_convert_image.assert_called_once_with(
-                volume_path, upload_path, 'raw')
+                volume_path, upload_path, 'raw', run_as_root=True)
             mock_upload_volume.assert_called_once_with(
-                mock.ANY, mock.ANY, mock.ANY, upload_path)
+                mock.ANY, mock.ANY, mock.ANY, upload_path, run_as_root=True)
             self.assertEqual(1, mock_create_temporary_file.call_count)
 
     def test_migrate_volume_is_there(self):

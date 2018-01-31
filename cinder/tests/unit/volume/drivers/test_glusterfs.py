@@ -94,8 +94,7 @@ class GlusterFsDriverTestCase(test.TestCase):
         self._configuration.nas_mount_options = None
 
         self._driver =\
-            glusterfs.GlusterfsDriver(configuration=self._configuration,
-                                      db=FakeDb())
+            glusterfs.GlusterfsDriver(configuration=self._configuration)
         self._driver.shares = {}
         compute.API = mock.MagicMock()
         self.context = context.get_admin_context()

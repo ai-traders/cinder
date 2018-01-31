@@ -1027,6 +1027,19 @@ class SmbfsNoSuitableShareFound(RemoteFSNoSuitableShareFound):
     message = _("There is no share which can host %(volume_size)sG.")
 
 
+# Gluster driver
+class GlusterfsException(RemoteFSException):
+    message = _("Unknown Gluster exception")
+
+
+class GlusterfsNoSharesMounted(RemoteFSNoSharesMounted):
+    message = _("No mounted Gluster shares found")
+
+
+class GlusterfsNoSuitableShareFound(RemoteFSNoSuitableShareFound):
+    message = _("There is no share which can host %(volume_size)sG")
+
+
 # Virtuozzo Storage Driver
 
 class VzStorageException(RemoteFSException):

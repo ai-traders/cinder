@@ -26,7 +26,7 @@ from oslo_utils import units
 
 from cinder import coordination
 from cinder import exception
-from cinder.i18n import _, _LE, _LI, _LW
+from cinder.i18n import _
 from cinder.image import image_utils
 from cinder import interface
 from cinder import utils
@@ -64,7 +64,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
     driver_volume_type = 'glusterfs'
     driver_prefix = 'glusterfs'
     volume_backend_name = 'GlusterFS'
-    VERSION = '1.3.0'
+    VERSION = '1.4.0'
 
     # ThirdPartySystems wiki page
     CI_WIKI_NAME = "Cinder_Jenkins"
@@ -85,7 +85,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
         """Any initialization the volume driver does while starting."""
         super(GlusterfsDriver, self).do_setup(context)
 
-        LOG.warning(_LW("The GlusterFS volume driver is deprecated and "
+        LOG.warning(_("The GlusterFS volume driver is deprecated and "
                         "will be removed during the Ocata cycle."))
 
         config = self.configuration.glusterfs_shares_config
@@ -119,7 +119,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
             try:
                 self._do_umount(True, share)
             except Exception as exc:
-                LOG.warning(_LW('Exception during unmounting %s'), exc)
+                LOG.warning(_('Exception during unmounting %s'), exc)
 
     def _do_umount(self, ignore_not_mounted, share):
         mount_path = self._get_mount_point_for_share(share)
@@ -128,9 +128,9 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
             self._execute(*command, run_as_root=True)
         except processutils.ProcessExecutionError as exc:
             if ignore_not_mounted and 'not mounted' in exc.stderr:
-                LOG.info(_LI("%s is already umounted"), share)
+                LOG.info(_("%s is already umounted"), share)
             else:
-                LOG.error(_LE("Failed to umount %(share)s, reason=%(stderr)s"),
+                LOG.error(_("Failed to umount %(share)s, reason=%(stderr)s"),
                           {'share': share, 'stderr': exc.stderr})
                 raise
 
@@ -139,7 +139,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
             self._unmount_shares()
         except processutils.ProcessExecutionError as exc:
             if 'target is busy' in exc.stderr:
-                LOG.warning(_LW("Failed to refresh mounts, reason=%s"),
+                LOG.warning(_("Failed to refresh mounts, reason=%s"),
                             exc.stderr)
             else:
                 raise
@@ -196,7 +196,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
 
         volume.provider_location = self._find_share(volume.size)
 
-        LOG.info(_LI('casted to %s'), volume.provider_location)
+        LOG.info(_('casted to %s'), volume.provider_location)
 
         self._do_create_volume(volume)
 
@@ -247,7 +247,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
         """Deletes a logical volume."""
 
         if not volume.provider_location:
-            LOG.warning(_LW('Volume %s does not have '
+            LOG.warning(_('Volume %s does not have '
                             'provider_location specified, '
                             'skipping'), volume.name)
             return
@@ -356,7 +356,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
                 self._fallocate(volume_path, volume_size)
             except processutils.ProcessExecutionError as exc:
                 if 'Operation not supported' in exc.stderr:
-                    LOG.warning(_LW('Fallocate not supported by current '
+                    LOG.warning(_('Fallocate not supported by current '
                                     'version of glusterfs. So falling '
                                     'back to dd.'))
                     self._create_regular_file(volume_path, volume_size)
@@ -378,7 +378,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
                 self._ensure_share_mounted(share)
                 self._mounted_shares.append(share)
             except Exception as exc:
-                LOG.error(_LE('Exception during mounting %s'), exc)
+                LOG.error(_('Exception during mounting %s'), exc)
 
         LOG.debug('Available shares: %s', self._mounted_shares)
 
@@ -437,7 +437,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
         try:
             self._remotefsclient.mount(glusterfs_share, mnt_flags)
         except processutils.ProcessExecutionError:
-            LOG.error(_LE("Mount failure for %(share)s."),
+            LOG.error(_("Mount failure for %(share)s."),
                       {'share': glusterfs_share})
             raise
 
@@ -464,7 +464,7 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
         info = self._qemu_img_info(active_file_path, volume.name)
 
         if info.backing_file is not None:
-            LOG.error(_LE('No snapshots found in database, but %(path)s has '
+            LOG.error(_('No snapshots found in database, but %(path)s has '
                           'backing file %(backing_file)s!'),
                       {'path': active_file_path,
                        'backing_file': info.backing_file})

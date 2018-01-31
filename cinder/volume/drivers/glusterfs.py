@@ -429,6 +429,12 @@ class GlusterfsDriver(remotefs_drv.RemoteFSSnapDriverDistributed,
                 volume_size=volume_size_for)
         return greatest_share
 
+
+    def _fallocate(self, path, size):
+        """Creates a raw file of given size in GiB using fallocate."""
+        self._execute('fallocate', '--length=%sG' % size,
+                      path, run_as_root=True)
+
     def _mount_glusterfs(self, glusterfs_share):
         """Mount GlusterFS share to mount path."""
         mnt_flags = []

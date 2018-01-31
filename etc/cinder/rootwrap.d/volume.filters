@@ -129,6 +129,7 @@ netapp_nfs_touch: CommandFilter, touch, root
 # cinder/volume/drivers/glusterfs.py
 chgrp: CommandFilter, chgrp, root
 umount: CommandFilter, umount, root
+fallocate: CommandFilter, fallocate, root
 
 # cinder/volumes/drivers/hds/hds.py:
 hus-cmd: CommandFilter, hus-cmd, root
@@ -230,4 +231,3 @@ drv_cfg: CommandFilter, /opt/emc/scaleio/sdc/bin/drv_cfg, root, /opt/emc/scaleio
 # cinder/volume/drivers/quobyte.py
 mount.quobyte: CommandFilter, mount.quobyte, root
 umount.quobyte: CommandFilter, umount.quobyte, root
-
